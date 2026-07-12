@@ -1,0 +1,11 @@
+{
+  "name": "algo-trading-agents",
+  "install": "python -m pip install -U pip && pip install -r requirements.txt && pip install -e .",
+  "terminals": [
+    {
+      "name": "health",
+      "command": "python scripts/check_connections.py",
+      "description": "Verify optional connectors after Cursor Secrets are injected as env vars."
+    }
+  ]
+}
