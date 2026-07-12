@@ -45,3 +45,7 @@ craft-agents-oss/**/.turbo/
 Thumbs.db
 .idea/
 .vscode/
+
+# Local Cursor hook state
+.cursor/hooks/state/
+
