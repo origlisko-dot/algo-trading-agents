@@ -1,0 +1,40 @@
+# ---- Core (required to run the skeleton) ----
+pandas>=2.0
+numpy>=1.24
+requests>=2.31
+python-dotenv>=1.0
+pydantic>=2.5
+pydantic-settings>=2.1
+rich>=13.7
+
+# ---- Broker connectors (optional) ----
+alpaca-py>=0.20          # Alpaca trading + market data
+ib-insync>=0.9.86        # Interactive Brokers (needs TWS/Gateway running)
+
+# ---- Market-data / news connectors (optional) ----
+yfinance>=0.2.40         # no-key default data source
+finnhub-python>=2.4      # Finnhub
+# Polygon / FMP / NewsAPI / EDGAR are called over plain `requests` (no extra SDK).
+
+# ---- Sentiment / NLP via Hugging Face (optional, heavier) ----
+transformers>=4.40
+torch>=2.2               # CPU build is fine for FinBERT; GPU optional
+sentence-transformers>=3.0
+
+# ---- Memory (optional) ----
+chromadb>=0.5
+
+# ---- Backtesting (optional, heavier) ----
+vectorbt>=0.26
+# backtrader>=1.9        # alternative event-driven engine
+
+# ---- Agents / LLMOps (optional) ----
+langchain>=0.3
+langgraph>=0.2
+langsmith>=0.1
+langchain-openai>=0.2
+langchain-core>=0.3
+
+# ---- Dev (optional) ----
+pytest>=8.0
+ruff>=0.5

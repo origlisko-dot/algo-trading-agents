@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2026-07-11 Open Ideation · algo-trading-agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a222c;
+      --ink: #e8eef4;
+      --muted: #8b9aab;
+      --accent: #3dd6c6;
+      --warm: #f0a05a;
+      --line: #2a3644;
+      --ok: #6bcf7f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Heebo", "IBM Plex Sans", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1b3a3a 0%, transparent 55%), var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    main { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 0.4rem; letter-spacing: -0.02em; }
+    .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    .meta code { color: var(--accent); }
+    section { margin: 2rem 0; }
+    h2 { font-size: 1.15rem; color: var(--warm); border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem;
+      margin: 0.9rem 0;
+    }
+    .card h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: #24313f;
+      color: var(--accent);
+      margin-left: 0.35rem;
+    }
+    .basis { color: var(--muted); font-size: 0.9rem; margin: 0.5rem 0; }
+    .why, .meet { margin: 0.35rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: right; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    footer.composition-signal { margin-top: 3rem; color: var(--muted); font-size: 0.8rem; }
+    .note { background: #162018; border: 1px solid #2d4a35; padding: 0.75rem 1rem; border-radius: 8px; color: var(--ok); }
+    ul.compact li { margin: 0.25rem 0; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ideation · algo-trading-agents</h1>
+    <p class="meta">
+      Type: <strong>open ideation</strong> (surprise-me) ·
+      Date: <time datetime="2026-07-11">2026-07-11</time> ·
+      Format: HTML ·
+      Mode: repo-grounded ·
+      Survivors: <strong>7</strong> ·
+      Raw (synthesized): ~22 ·
+      Cut: 15 ·
+      Run: <code>0fdb1ae3</code>
+    </p>
+    <p class="note">Treating this as a topic in this codebase — next moves after AGENTIC-OS + Phase-1 ML + simulated paper. Ideation fleet hit API limits; survivors synthesized from codebase scan + web research with orchestrator arbitration (verifier skipped — degradation noted).</p>
+  </header>
+
+  <section id="grounding">
+    <h2>Grounding Context</h2>
+    <p><strong>Codebase:</strong> Python US-equities scaffold. AGENTIC-OS daily = health → eval gate → paper → 3-way monitor → portfolio/PnL. Strategies: momentum, LangGraph agent, thin ML. Simulated broker + <code>runs/active_strategy.json</code> auto-promote. Universe Finnhub→Polygon→Alpaca with cache.</p>
+    <p><strong>Gaps:</strong> README lags; ML lstsq only; monitor 5-symbol cap; reflection not closed-loop; no 90-day ops surface; RL/evolution aspirational.</p>
+    <p><strong>External:</strong> TradingAgents debate firm; FinMem layered memory; FinRL-X paper ops; ContestTrade internal contest; DataRobot champion/challenger; FinRL-DeepSeek LLM+RL.</p>
+    <p><strong>Topic axes:</strong> Decomposition skipped — surprise-me mode.</p>
+  </section>
+
+  <section id="ranked-ideas">
+    <h2>Ranked Ideas</h2>
+
+    <article class="card" id="i1">
+      <h3>I1. <span class="badge">#1</span> Cross-sectional universe scanner job</h3>
+      <p class="badge">Conf High</p> <p class="badge">Cx M</p>
+      <p>Add <code>os/jobs/universe_scan.py</code>: score Finnhub-capped symbols with ML/momentum cross-section, emit top-N watchlist to <code>runs/daily_watchlist.json</code>, and make paper job consume that list instead of alphabetical Finnhub slice.</p>
+      <p class="basis"><strong>basis direct:</strong> universe loads 18k then caps 50 alphabetically (A, AA…); monitor/paper never exercise “ALL US” intent. Scan subjects named this gap.</p>
+      <p class="why"><strong>why it matters:</strong> Without ranking, “full US universe” is theater — you trade liquid mega-caps by accident of sort order.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — closes the stated product promise vs actual scan behavior.</p>
+    </article>
+
+    <article class="card" id="i2">
+      <h3>I2. <span class="badge">#2</span> FinMem closed loop: PnL → Chroma → next debate</h3>
+      <p class="badge">Conf High</p> <p class="badge">Cx M</p>
+      <p>On each portfolio snapshot, write structured reflections (weights, unrealized PnL, promotion winner) into Chroma; inject top-k recalls into agent graph / paper context next day.</p>
+      <p class="basis"><strong>basis external:</strong> FinMem layered memory + adjustable cognitive span; repo already has reflection + Chroma but not wired into next decision.</p>
+      <p class="why"><strong>why it matters:</strong> Memory without retrieval is logging. Closing the loop is the FinMem differentiator the README claims.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — turns Phase-4 self-improvement from aspiration into a daily job step.</p>
+    </article>
+
+    <article class="card" id="i3">
+      <h3>I3. <span class="badge">#3</span> Regime-conditioned promotion (not global Sharpe)</h3>
+      <p class="badge">Conf Med</p> <p class="badge">Cx M</p>
+      <p>Detect vol/trend regime on SPY; store per-regime Sharpe for momentum/agent/ml; promote the winner for the current regime into <code>active_strategy.json</code>.</p>
+      <p class="basis"><strong>basis reasoned:</strong> Global Sharpe on 5 symbols over 365d crowned ML once; that may be regime luck. ContestTrade + DataRobot C/C both assume continuous ranking under changing conditions.</p>
+      <p class="why"><strong>why it matters:</strong> Prevents sticky wrong champion after a single quiet-tape bake-off.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — upgrades the one promotion lever you already ship.</p>
+    </article>
+
+    <article class="card" id="i4">
+      <h3>I4. <span class="badge">#4</span> 90-day paper ops dashboard</h3>
+      <p class="badge">Conf High</p> <p class="badge">Cx S</p>
+      <p>Static HTML (or Rich TUI) over <code>pnl_history.jsonl</code> + active strategy timeline + signal drift: equity, max DD, snapshots/day, strategy switches.</p>
+      <p class="basis"><strong>basis direct:</strong> <code>pnl_tracker</code> + portfolio job exist; Phase-2 roadmap needs 30–90 day evidence; no human-readable surface yet.</p>
+      <p class="why"><strong>why it matters:</strong> Without a glanceable ops surface, paper discipline dies after week two.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — cheapest path to “are we actually running Phase 2?”</p>
+    </article>
+
+    <article class="card" id="i5">
+      <h3>I5. <span class="badge">#5</span> Shadow ladder: paper all three strategies every day</h3>
+      <p class="badge">Conf Med</p> <p class="badge">Cx L</p>
+      <p>Keep one live paper book on active strategy, but also append shadow fills for momentum and agent (and ML) into separate simulated ledgers; promote only after N days of shadow edge.</p>
+      <p class="basis"><strong>basis external:</strong> DataRobot/Atlan shadow deployment; ml4t-live shadow→paper; ContestTrade continuous ranking.</p>
+      <p class="why"><strong>why it matters:</strong> Today promotion is backtest Sharpe, not paper P&amp;L — mismatch with paper-first doctrine.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — biggest integrity upgrade to auto-promote.</p>
+    </article>
+
+    <article class="card" id="i6">
+      <h3>I6. <span class="badge">#6</span> Eval-failure as ContestTrade learning signal</h3>
+      <p class="badge">Conf Med</p> <p class="badge">Cx S</p>
+      <p>When eval gate fails, don’t only abort: write failing scenario IDs + scores to memory and tighten guardrail bounds (weight caps / tool allowlist) for the next run.</p>
+      <p class="basis"><strong>basis external:</strong> ContestTrade ranks research agents before synthesis; repo evals already gate paper.</p>
+      <p class="why"><strong>why it matters:</strong> Failed evals become fuel, not only a red light.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — small change, high LLMOps signal.</p>
+    </article>
+
+    <article class="card" id="i7">
+      <h3>I7. <span class="badge">#7</span> Zero-LLM paper path as first-class champion</h3>
+      <p class="badge">Conf Med</p> <p class="badge">Cx S</p>
+      <p>Treat offline heuristic/momentum as a permanent shadow champion with cost=0; LLM agent only promotes when it beats zero-LLM on paper PnL after costs.</p>
+      <p class="basis"><strong>basis reasoned:</strong> Constraint flip ($0 LLM). Heuristic fallbacks already exist; OpenRouter cost otherwise invisible in Sharpe.</p>
+      <p class="why"><strong>why it matters:</strong> Forces LLM to earn its keep vs free baseline — matches research honesty in README.</p>
+      <p class="meet"><strong>meeting_test:</strong> Yes — philosophical + operational guardrail.</p>
+    </article>
+  </section>
+
+  <section id="rejection">
+    <h2>Rejection Summary</h2>
+    <table>
+      <thead><tr><th>Idea</th><th>Why cut</th></tr></thead>
+      <tbody>
+        <tr><td>Rewrite README only</td><td>below ambition floor alone; do as chore alongside I4</td></tr>
+        <tr><td>Full FinRL RL agent now</td><td>too expensive vs current Phase-2 paper evidence need</td></tr>
+        <tr><td>Add more brokers (Schwab etc.)</td><td>already covered by simulated + IBKR path; low leverage</td></tr>
+        <tr><td>Live trading tiny capital</td><td>scope/roadmap Phase 5; violates paper-first until evidence</td></tr>
+        <tr><td>Train FinBERT from scratch</td><td>unjustified vs ProsusAI FinBERT already wiring</td></tr>
+        <tr><td>Generic “add dashboard metrics”</td><td>duplicate of I4, vaguer</td></tr>
+        <tr><td>Multi-asset crypto/FX</td><td>subject-replacement vs US equities scaffold</td></tr>
+        <tr><td>Replace LangGraph with custom graph</td><td>already covered; no new meeting value</td></tr>
+        <tr><td>Alphabetical universe “fix” via random sample</td><td>weaker than I1 ranked scan</td></tr>
+        <tr><td>Store every bar in Chroma</td><td>too expensive / wrong store</td></tr>
+        <tr><td>Hourly promote</td><td>constraint-flip that fails meeting-test for daily equities</td></tr>
+        <tr><td>Never promote (manual only)</td><td>duplicates I7 spirit but kills AGENTIC-OS leverage</td></tr>
+        <tr><td>Social-sentiment Twitter firehose</td><td>not grounded in current connectors</td></tr>
+        <tr><td>GUI desktop app</td><td>too expensive; I4 HTML is enough</td></tr>
+        <tr><td>Walk-forward ML alone without scanner</td><td>interesting but I1+I3 subsume better sequencing</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="composition-signal">
+    Composed 2026-07-11 by ce-ideate (surprise-me, repo-grounded) · scratch run <code>0fdb1ae3</code> ·
+    grounding: codebase explore + web research · ideation fleet API-limited → orchestrator synthesis ·
+    continual-learning: AGENTS.md updated earlier this session.
+  </footer>
+</main>
+</body>
+</html>

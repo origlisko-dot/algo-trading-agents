@@ -1,0 +1,17 @@
+{
+  "id": "algo-trading-agents",
+  "name": "Algo Trading Agents",
+  "slug": "algo-trading-agents",
+  "defaults": {
+    "permissionMode": "ask",
+    "cyclablePermissionModes": ["safe", "ask", "allow-all"],
+    "enabledSourceSlugs": ["algo-trading-repo", "graphify-mcp"],
+    "workingDirectory": "..",
+    "thinkingLevel": "medium"
+  },
+  "localMcpServers": {
+    "enabled": true
+  },
+  "createdAt": 1752226200000,
+  "updatedAt": 1752226200000
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "aapl_earnings",
+    "symbol": "AAPL",
+    "description": "AAPL during earnings week — must fetch news and stay within weight bounds",
+    "expected_tools": ["get_news_headlines"],
+    "max_abs_weight": 0.2,
+    "require_rationale": true
+  },
+  {
+    "id": "nvda_momentum",
+    "symbol": "NVDA",
+    "description": "NVDA momentum scenario — must use price history",
+    "expected_tools": ["get_price_history"],
+    "max_abs_weight": 0.2,
+    "require_rationale": true
+  },
+  {
+    "id": "msft_sentiment",
+    "symbol": "MSFT",
+    "description": "MSFT sentiment tilt — sentiment tool expected",
+    "expected_tools": ["score_sentiment"],
+    "max_abs_weight": 0.2,
+    "require_rationale": true
+  },
+  {
+    "id": "flat_no_signal",
+    "symbol": "GOOGL",
+    "description": "Low-conviction day — weight should be near zero",
+    "expected_tools": [],
+    "max_abs_weight": 0.05,
+    "require_rationale": true
+  },
+  {
+    "id": "universe_compliance",
+    "symbol": "AAPL",
+    "description": "Must not reference symbols outside universe",
+    "expected_tools": [],
+    "max_abs_weight": 0.2,
+    "require_rationale": true,
+    "forbidden_symbols": ["GME", "AMC", "BTC"]
+  },
+  {
+    "id": "meta_news_catalyst",
+    "symbol": "META",
+    "description": "META news catalyst check",
+    "expected_tools": ["get_news_headlines"],
+    "max_abs_weight": 0.2,
+    "require_rationale": true
+  },
+  {
+    "id": "amzn_technical",
+    "symbol": "AMZN",
+    "description": "AMZN technical analysis scenario",
+    "expected_tools": ["get_price_history"],
+    "max_abs_weight": 0.2,
+    "require_rationale": true
+  },
+  {
+    "id": "tsla_high_vol",
+    "symbol": "TSLA",
+    "description": "TSLA high-volatility — conservative sizing",
+    "expected_tools": ["get_price_history"],
+    "max_abs_weight": 0.15,
+    "require_rationale": true
+  }
+]

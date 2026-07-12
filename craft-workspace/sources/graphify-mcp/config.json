@@ -1,0 +1,21 @@
+{
+  "id": "src-graphify-mcp",
+  "name": "Graphify Knowledge Graph",
+  "slug": "graphify-mcp",
+  "enabled": true,
+  "provider": "graphify",
+  "type": "mcp",
+  "mcp": {
+    "transport": "stdio",
+    "command": "python",
+    "args": [
+      "scripts/run_graphify_mcp.py"
+    ],
+    "env": {}
+  },
+  "icon": "🕸️",
+  "tagline": "Query the algo_agents knowledge graph (path, explain, affected nodes)",
+  "connectionStatus": "untested",
+  "createdAt": 1752226200000,
+  "updatedAt": 1752226200000
+}

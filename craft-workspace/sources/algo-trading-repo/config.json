@@ -1,0 +1,17 @@
+{
+  "id": "src-algo-trading-repo",
+  "name": "Algo Trading Repo",
+  "slug": "algo-trading-repo",
+  "enabled": true,
+  "provider": "filesystem",
+  "type": "local",
+  "local": {
+    "path": "..",
+    "format": "git"
+  },
+  "icon": "📈",
+  "tagline": "US equities ML/agent trading scaffold: connectors, AGENTIC-OS, paper loop, backtests",
+  "connectionStatus": "connected",
+  "createdAt": 1752226200000,
+  "updatedAt": 1752226200000
+}
