@@ -31,7 +31,9 @@ chroma_db/
 algo_agents/graphify-out/
 
 # Vendored upstream clones (see docs/vendor-integration.md)
-graphify/
+# Anchored to repo root so it only ignores the top-level vendored clone,
+# NOT the runtime source package algo_agents/os/graphify/.
+/graphify/
 craft-agents-oss/
 craft-workspace/sessions/
 
