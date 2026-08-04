@@ -24,6 +24,12 @@ sentence-transformers>=3.0
 # ---- Memory (optional) ----
 chromadb>=0.5
 
+# ---- Fine-tuning: LoRA / QLoRA (optional, heavier) ----
+peft>=0.11               # Low-Rank Adaptation adapters (LoRA)
+accelerate>=0.30         # Trainer device/placement backend
+datasets>=2.19           # dataset plumbing for the Trainer
+bitsandbytes>=0.43       # 4/8-bit quantization for QLoRA (CUDA GPU only at runtime)
+
 # ---- Backtesting (optional, heavier) ----
 vectorbt>=0.26
 # backtrader>=1.9        # alternative event-driven engine

@@ -73,6 +73,23 @@ class Settings(BaseSettings):
     # ---- Memory ----
     chroma_persist_dir: str = "./chroma_db"
 
+    # ---- Fine-tuning: LoRA / QLoRA ----
+    finetune_base_model: str = "ProsusAI/finbert"
+    finetune_output_dir: str = "./runs/finetune"
+    finetune_num_labels: int = 3
+    finetune_epochs: float = 1.0
+    finetune_batch_size: int = 8
+    finetune_lr: float = 2e-4
+    finetune_max_length: int = 128
+    # LoRA hyper-parameters.
+    lora_r: int = 8
+    lora_alpha: int = 16
+    lora_dropout: float = 0.05
+    # Comma-separated attention sub-modules to adapt (BERT: query,value).
+    lora_target_modules: str = "query,value"
+    # QLoRA quantization: 4 or 8 bit (requires bitsandbytes + a CUDA GPU).
+    qlora_bits: int = 4
+
     # ---- LLM / LangSmith ----
     langsmith_api_key: str | None = None
     langsmith_project: str = "algo-trading-agents"
