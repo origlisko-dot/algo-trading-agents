@@ -105,6 +105,7 @@ algo_agents/
     memory/                # chroma vector store
   features/technical.py    # look-ahead-safe technical features
   strategy/                # weight-centric strategy interface + baseline
+  finetune/                # LoRA / QLoRA fine-tuning (config, status, data, trainer)
   risk/risk_manager.py     # clipping, exposure caps, kill-switch, sizing
   backtest/engine.py       # cost-aware vectorized backtest + metrics
   monitoring/              # champion/challenger + pnl_tracker
@@ -112,6 +113,7 @@ scripts/
   check_connections.py     # health-check every connector
   run_agentic_os.py        # AGENTIC-OS CLI
   run_sentiment_demo.py    # FinBERT demo (Hugging Face)
+  run_finetune_demo.py     # LoRA / QLoRA fine-tuning demo
 ```
 
 ## Quickstart
@@ -160,6 +162,31 @@ time.
 | News        | SEC EDGAR            | `EDGAR_USER_AGENT` (name + email)      |
 | Sentiment   | Hugging Face FinBERT | `transformers` + `torch` (CPU ok)      |
 | Memory      | Chroma               | `chromadb`                             |
+
+## Fine-tuning (LoRA / QLoRA)
+
+`algo_agents/finetune/` adapts a Hugging Face sequence classifier (default
+`ProsusAI/finbert`) to your own labeled data with small, swappable **LoRA**
+adapters — training well under 1% of the parameters. **QLoRA** additionally
+loads the frozen base in 4/8-bit (`bitsandbytes`) for GPU-cheap fine-tuning.
+
+```bash
+python scripts/run_finetune_demo.py                 # LoRA on a tiny model (fast, CPU)
+python scripts/run_finetune_demo.py --base ProsusAI/finbert --epochs 6
+python scripts/run_finetune_demo.py --qlora         # 4-bit QLoRA (requires a CUDA GPU)
+```
+
+Like every integration, the stack degrades gracefully: `finetune_status()`
+reports each component, LoRA runs on CPU or GPU, and QLoRA reports
+`NOT_RUNNING` (with a clear reason) when no CUDA GPU is present instead of
+failing silently. Adapters are saved under `runs/finetune/adapter` and can be
+reloaded onto the base model for inference. Hyper-parameters (`lora_r`,
+`lora_alpha`, `qlora_bits`, ...) live in `.env` / `Settings`.
+
+| Component | Needs |
+|-----------|-------|
+| LoRA      | `peft` + `accelerate` + `transformers` (CPU ok) |
+| QLoRA     | the above + `bitsandbytes` + a CUDA GPU |
 
 ## Roadmap (paper-first)
 
