@@ -5,6 +5,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# User-local pip scripts (graphify, pytest, etc.)
+export PATH="${HOME}/.local/bin:${PATH}"
+
 echo "[bootstrap] Installing Python dependencies..."
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
