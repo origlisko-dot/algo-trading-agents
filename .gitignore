@@ -31,9 +31,13 @@ chroma_db/
 algo_agents/graphify-out/
 
 # Vendored upstream clones (see docs/vendor-integration.md)
-graphify/
-craft-agents-oss/
+# Anchor to repo root so AGENTIC-OS package algo_agents/os/graphify/ is tracked.
+/graphify/
+/craft-agents-oss/
 craft-workspace/sessions/
+
+# Codebase knowledge-graph outputs (AST extract at repo root)
+/graphify-out/
 
 # Craft / Node build artifacts
 craft-agents-oss/node_modules/
