@@ -1,12 +1,20 @@
-"""Paper P&L history for 30-90 day tracking."""
+"""Paper P&L history for 30-90 day tracking (hash-chained, append-only)."""
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from algo_agents.config import get_settings
+
+
+def _row_hash(row: dict[str, Any], prev_hash: str) -> str:
+    payload = {k: v for k, v in row.items() if k not in ("hash", "prev_hash")}
+    payload["prev_hash"] = prev_hash
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def _history_path() -> Path:
@@ -36,9 +44,35 @@ def record_snapshot(
         "weights": weights or {},
         "unrealized_pl": sum(float(p.get("unrealized_pl", 0)) for p in positions),
     }
+    history = load_history(limit=1)
+    prev_hash = history[-1].get("hash", "") if history else ""
+    row["prev_hash"] = prev_hash
+    row["hash"] = _row_hash(row, prev_hash)
     with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row) + "\n")
     return path
+
+
+def verify_chain() -> dict[str, Any]:
+    """Recompute the hash chain; return {ok, snapshots, legacy, broken_at}.
+
+    Rows written before the chain existed (no hash fields) are legacy and
+    skipped; verification starts at the first chained row.
+    """
+    history = load_history()
+    chained_start = next((i for i, row in enumerate(history) if row.get("hash")), None)
+    if chained_start is None:
+        return {"ok": True, "snapshots": len(history), "legacy": len(history), "broken_at": None}
+    legacy = chained_start
+    prev = ""
+    for i, row in enumerate(history):
+        if i < chained_start:
+            continue
+        expected = _row_hash(row, prev)
+        if row.get("prev_hash", "") != prev or row.get("hash") != expected:
+            return {"ok": False, "snapshots": len(history), "legacy": legacy, "broken_at": i}
+        prev = row.get("hash", "")
+    return {"ok": True, "snapshots": len(history), "legacy": legacy, "broken_at": None}
 
 
 def load_history(limit: int | None = None) -> list[dict[str, Any]]:

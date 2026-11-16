@@ -82,6 +82,9 @@ class Settings(BaseSettings):
     nvidia_api_key: str | None = None
     llm_base_url: str | None = None
     llm_model: str = "openai/gpt-4o-mini"
+    # Optional cheaper/faster model for analyst data-summarization calls;
+    # falls back to llm_model when unset.
+    llm_fast_model: str | None = None
 
     @property
     def llm_api_key(self) -> str | None:

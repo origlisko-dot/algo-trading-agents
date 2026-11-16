@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import pandas as pd
+
 from algo_agents.agents.reflection import build_memory_context, reflect_strategy_result
 from algo_agents.connectors.base import OrderSide
 from algo_agents.connectors.brokers.factory import broker_status, get_paper_broker
@@ -36,6 +38,41 @@ def _filter_orders(orders, positions: dict[str, float]):
     return filtered, skipped
 
 
+def _extract_vols(features: dict) -> dict[str, float]:
+    """Latest daily volatility_20 per symbol (None-safe)."""
+    vols: dict[str, float] = {}
+    for sym, frame in features.items():
+        try:
+            col = frame.get("volatility_20")
+            if col is None or col.empty:
+                continue
+            val = float(col.dropna().iloc[-1])
+            if val > 0:
+                vols[sym] = val
+        except Exception:
+            continue
+    return vols
+
+
+def _return_correlations(features: dict) -> pd.DataFrame | None:
+    """Cross-symbol correlation of daily returns (last 60 obs)."""
+    series: dict[str, pd.Series] = {}
+    for sym, frame in features.items():
+        try:
+            col = frame.get("return_1d")
+            if col is None or col.empty:
+                continue
+            tail = col.dropna().tail(60)
+            if len(tail) >= 20:
+                series[sym] = tail
+        except Exception:
+            continue
+    if len(series) < 2:
+        return None
+    corr = pd.DataFrame(series).corr()
+    return corr if not corr.empty else None
+
+
 def run_paper_trade(ctx: RunContext) -> JobResult:
     settings = ctx.settings
     symbols = resolve_paper_symbols(settings, explicit=ctx.symbols)
@@ -55,7 +92,9 @@ def run_paper_trade(ctx: RunContext) -> JobResult:
     _log.info("strategy=%s weights=%s", strategy.name, result.weights)
 
     risk = RiskManager(RiskLimits(max_weight_per_symbol=learned_max_weight()))
-    approved = risk.apply(result.weights, current_drawdown=0.0)
+    vols = _extract_vols(features)
+    corr = _return_correlations(features)
+    approved = risk.apply(result.weights, current_drawdown=0.0, vols=vols, corr=corr)
     if not approved:
         reflect_strategy_result(approved, result.rationale)
         return JobResult(

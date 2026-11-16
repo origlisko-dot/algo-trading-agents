@@ -194,12 +194,13 @@ def _heuristic_analyze(symbol: str, features_summary: str = "") -> AgentState:
     )
 
 
-def _build_llm():
+def _build_llm(*, deep: bool = False):
+    """Build an LLM client. Analysts use the fast model; the moderator uses deep."""
     settings = get_settings()
     if not settings.llm_api_key:
         raise RuntimeError("Set OPENROUTER_API_KEY, NVIDIA_API_KEY, or OPENAI_API_KEY in .env")
     kwargs: dict[str, Any] = {
-        "model": settings.llm_model,
+        "model": settings.llm_model if deep else (settings.llm_fast_model or settings.llm_model),
         "api_key": settings.llm_api_key,
         "temperature": 0,
     }
@@ -216,7 +217,7 @@ def _parse_moderator_json(text: str) -> dict[str, Any]:
 
 
 def _llm_analyze(symbol: str, features_summary: str = "") -> AgentState:
-    llm = _build_llm()
+    llm = _build_llm(deep=False)
     tools = get_all_tools()
     tool_calls: list[str] = []
     opinions: dict[str, str] = {}
@@ -319,7 +320,7 @@ def _build_graph():
         opinions = state.get("analyst_opinions", {})
         opinions_text = "\n".join(f"{k}: {v}" for k, v in opinions.items())
         try:
-            llm = _build_llm()
+            llm = _build_llm(deep=True)
             mod_prompt = DEBATE_MODERATOR.format(symbol=symbol, opinions=opinions_text)
             resp = llm.invoke([HumanMessage(content=mod_prompt)])
             parsed = _parse_moderator_json(str(resp.content))
