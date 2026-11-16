@@ -160,6 +160,7 @@ time.
 | News        | SEC EDGAR            | `EDGAR_USER_AGENT` (name + email)      |
 | Sentiment   | Hugging Face FinBERT | `transformers` + `torch` (CPU ok)      |
 | Memory      | Chroma               | `chromadb`                             |
+| LLM agents  | OpenRouter / NVIDIA NIM / OpenAI | `OPENROUTER_API_KEY` / `NVIDIA_API_KEY` / `OPENAI_API_KEY` (all optional — heuristic fallback without) |
 
 ## Roadmap (paper-first)
 
