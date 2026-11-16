@@ -11,6 +11,7 @@ from algo_agents.connectors.market_data import (
     FinnhubData,
     FMPData,
     PolygonData,
+    StooqData,
     YFinanceData,
 )
 from algo_agents.connectors.memory import ChromaMemory
@@ -19,7 +20,7 @@ from algo_agents.connectors.sentiment import HFSentiment
 
 _CONNECTOR_CLASSES: dict[str, list[type[BaseConnector]]] = {
     "brokers": [SimulatedBroker, IBKRBroker, AlpacaBroker],
-    "market_data": [YFinanceData, PolygonData, FinnhubData, FMPData],
+    "market_data": [YFinanceData, StooqData, PolygonData, FinnhubData, FMPData],
     "news": [NewsAPINews, EdgarNews],
     "sentiment": [HFSentiment],
     "memory": [ChromaMemory],

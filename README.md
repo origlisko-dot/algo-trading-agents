@@ -145,6 +145,12 @@ python scripts/run_agentic_os.py job graphify
 stack runs in degraded mode without crashing, so you can wire keys one at a
 time.
 
+Jobs fetch bars through a **resilient failover chain**
+(`build_market_data_chain()`): yfinance → Stooq → Finnhub → Polygon (keyed
+sources join automatically), with a day-granularity bar cache under
+`runs/cache/bars/` so same-day repeats (paper → monitor → portfolio) don't
+refetch or trip rate limits.
+
 ## Connectors
 
 | Category    | Connector            | Needs                                  |
@@ -153,6 +159,7 @@ time.
 | Broker      | Alpaca (paper/live)  | `ALPACA_API_KEY` / `ALPACA_SECRET_KEY` |
 | Broker      | Interactive Brokers  | `ib-insync` + running TWS/Gateway      |
 | Market data | yfinance             | nothing (default source)               |
+| Market data | Stooq (fallback)     | nothing (may be blocked on some IPs)   |
 | Market data | Polygon              | `POLYGON_API_KEY`                      |
 | Market data | Finnhub              | `FINNHUB_API_KEY`                      |
 | Market data | FMP                  | `FMP_API_KEY`                          |
@@ -160,6 +167,7 @@ time.
 | News        | SEC EDGAR            | `EDGAR_USER_AGENT` (name + email)      |
 | Sentiment   | Hugging Face FinBERT | `transformers` + `torch` (CPU ok)      |
 | Memory      | Chroma               | `chromadb`                             |
+| LLM agents  | OpenRouter / NVIDIA NIM / OpenAI | `OPENROUTER_API_KEY` / `NVIDIA_API_KEY` / `OPENAI_API_KEY` (all optional — heuristic fallback without) |
 
 ## Roadmap (paper-first)
 

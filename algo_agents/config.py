@@ -79,13 +79,17 @@ class Settings(BaseSettings):
     langchain_tracing_v2: bool = True
     openrouter_api_key: str | None = None
     openai_api_key: str | None = None
+    nvidia_api_key: str | None = None
     llm_base_url: str | None = None
     llm_model: str = "openai/gpt-4o-mini"
+    # Optional cheaper/faster model for analyst data-summarization calls;
+    # falls back to llm_model when unset.
+    llm_fast_model: str | None = None
 
     @property
     def llm_api_key(self) -> str | None:
-        """OpenRouter takes precedence when set."""
-        return self.openrouter_api_key or self.openai_api_key
+        """OpenRouter takes precedence, then NVIDIA NIM, then OpenAI."""
+        return self.openrouter_api_key or self.nvidia_api_key or self.openai_api_key
 
     @property
     def effective_llm_base_url(self) -> str | None:
@@ -93,6 +97,8 @@ class Settings(BaseSettings):
             return self.llm_base_url
         if self.openrouter_api_key:
             return "https://openrouter.ai/api/v1"
+        if self.nvidia_api_key:
+            return "https://integrate.api.nvidia.com/v1"
         return None
 
     @property
