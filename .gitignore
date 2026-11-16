@@ -31,7 +31,8 @@ chroma_db/
 algo_agents/graphify-out/
 
 # Vendored upstream clones (see docs/vendor-integration.md)
-graphify/
+# Anchored to repo root so algo_agents/os/graphify/ stays tracked.
+/graphify/
 craft-agents-oss/
 craft-workspace/sessions/
 

@@ -197,7 +197,7 @@ def _heuristic_analyze(symbol: str, features_summary: str = "") -> AgentState:
 def _build_llm():
     settings = get_settings()
     if not settings.llm_api_key:
-        raise RuntimeError("Set OPENROUTER_API_KEY or OPENAI_API_KEY in .env")
+        raise RuntimeError("Set OPENROUTER_API_KEY, NVIDIA_API_KEY, or OPENAI_API_KEY in .env")
     kwargs: dict[str, Any] = {
         "model": settings.llm_model,
         "api_key": settings.llm_api_key,
